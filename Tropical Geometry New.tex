@@ -1,0 +1,775 @@
+ \documentclass[]{article}
+\usepackage[utf8]{inputenc}
+
+
+%oAll below are commands from KEATS
+\usepackage{graphicx}
+\usepackage{amsmath, amsfonts, amsthm, bbm}
+\usepackage{pgfplots}
+\usepackage[all]{xy}
+\pgfplotsset{width=\columnwidth,compat=1.13}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{titling}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{enumitem}
+\usepackage{multicol}
+\theoremstyle{definition}
+\numberwithin{equation}{section}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{examp}[thm]{Example}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem*{blub}{Comment(s)}
+
+
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\dbyd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\vsig}{\vec{\sigma}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\comp}{\circ}
+\renewcommand{\O}{\mathcal{O}}
+\renewcommand{\u}{{u_1}}
+\renewcommand{\v}{{u_2}}
+\newcommand{\laplace}{\Delta}
+\renewcommand{\line}[2]{{\overrightarrow{#1,#2}}}
+\newcommand{\todo}[1]{{\color{red}\textbf{TODO!: #1}}}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+\renewcommand{\.}{\,.}
+
+
+%More Package
+\usepackage{geometry}
+\geometry{a4paper, left=30mm, right=30mm, top=20mm, bottom=20mm}
+\renewcommand{\baselinestretch}{1.5}
+%More package
+
+
+\begin{document}
+\begin{titlepage}
+
+\title{\textbf{Tropical Geometry and Tropical B\'ezout's Theorem}}
+
+\author{\includegraphics[width=.60\textwidth]{Titlep.png} \\
+	\\ Author: Amir Faris bin Mohd Kamri \\ Supervisor: Dr. Dmitri Panov \\ Module Code: 7CCM461A}
+\date{2020/21} 
+\clearpage\maketitle
+\thispagestyle{empty}
+
+\end{titlepage}
+\newpage
+\newpage
+
+\begin{abstract}
+The main focus of this dissertation is to understand the structure of tropical curves, and how it gives an alternative proof to B\'{e}zout's theorem. 
+This paper will first introduce the properties of tropical algebra and its semiring. Then, we will study tropical polynomials, (mainly in two variables) and continue with tropical roots. This will lead us to the explore tropical hypersurfaces and tropical curves. The notion of dual subdivision and Newton polytopes corresponding to tropical curves will then be discussed. 
+ We will then introduce B\'ezout's theorem briefly, and talk about the tropical intersection theory. The aim of this dissertation is to present and prove tropical B\'ezout's theorem. \end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\newpage
+\section{Introduction}
+\hspace*{3mm} Tropical geometry is a new and rapidly developing field of mathematics. It is a variant of algebraic geometry over the tropical semiring ($\R$  $\cup$ $\{-\infty\}$, $\oplus$, $\odot$): an algebraic structure over real numbers $\R$ including minus infinity. Tropical geometry redefines the rules of arithmetic that we usually use in \emph{classical mathematics} (that is the mathematics we usually use in our daily lives), where addition is replaced by taking the maximum of a set, defined as tropical addition $\oplus$, and multiplication is replaced by the usual addition, defined as tropical multiplication $\odot$. \\ \\
+ \hspace*{3mm}Tropical geometry can be said to be a study that connects algebraic geometry and combinatorics. Polynomials that we usually know of becomes piecewise-linear by using tropical algebra. Hence, it is easier to study tropical polynomials as it provides a simpler model of polynomials from algebraic geometry. Tropical geometry conserves a lot of properties from algebraic geometry, making many definitions and statements similar between the both of them. Therefore, tropical geometry provides us an alternative and easier way for us to understand complicated results in algebraic geometry by giving us a combinatorial counterpart.   \\
+\\
+\hspace*{3mm}The origin of the word ``tropical" in tropical geometry was coined by a group of French mathematicians around 20 or more years ago in honour of a Hungarian-born Brazillian computer scientist Imre Simon, who was one of the pioneer of the field. He wrote a lot in ``max-plus algebra" which is the foundation of tropical geometry. The reason the term ``tropical" was chosen is merely on the fact that Simon worked and lived in Brazil. The theory of tropical geometry was first developed in an applied context of optimization. It was only in recent years that it became ``mainstream" in mathematics as people realise the benefits of tropical geometry in other fields of mathematics such as in algebraic geometry and computational algebra.     \\ \\
+\hspace*{3mm}B\'{e}zout's theorem gives us a precise number of intersections for two curves defined on an algebraically closed field. The main idea of this paper is to prove this theorem by using tropical geometry. The first part of this paper will be on tropical algebra and its properties, then moving to tropical polynomials, focussing on tropical polynomials in two variables. Then, we will study tropical roots and explore the idea of tropical hypersurfaces mainly tropical hypersurface in $\mathbb{R}^2$, which is called  tropical curves. We then will introduce the notion of dual subdivision by understanding the convex hull of the roots tropical polynomials, and the Newton polytopes of the  corresponding tropical curves. We will show  combinatorial examples of dual subdivision by triangulation of tropical curves, and then talk about the balancing condition. We will give a short description of B\'ezout's theorem, and discuss the idea of tropical intersection theory. We will finally present and prove tropical  B\'ezout's theorem. \\ 
+
+\hspace*{3mm} Let us now discuss the notion of tropical algebra and establish some of its properties.
+\newpage
+
+
+
+\section{Tropical Algebra}
+\subsection{Tropical Semiring} 
+
+\begin{defn} The \emph{tropical semiring} $\mathbb{T}$  is the set ($\R$  $\cup$ $\{-\infty\}$, $\oplus$, $\odot$), with the operations: 
+		\begin{align}
+		x \oplus y := \textrm{max($x$, $y$)} \quad \textrm{and} \quad x \odot y := x + y,  \quad \quad \textrm{$x$, $y$ $\in \mathbb{T}$}, \label{fund1}
+		\end{align}
+and are called the \emph{tropical addition} and the \emph{tropical multiplication} respectively. 
+\end{defn}
+
+\begin{blub} \emph{(On the properties of the tropical operations.)} 	
+	\begin{enumerate}[noitemsep,topsep=-2pt]
+		\item Tropical addition and tropical multiplication are both \emph{associative}: \vspace{0.75mm}
+			\\ 
+			$\begin{gathered}
+		\quad \quad  \quad  \quad	x \oplus (y \oplus z)  = (x \oplus y) \oplus z \textrm{,} \quad \quad   x \odot (y \odot z)= (x \odot y)\odot z,\quad \quad  \emph{ \textrm{for all }} x, y, z \in \mathbb{T}.  
+			\end{gathered}$  \vspace{3mm}
+			\item Tropical addition and tropical multiplication are both \emph{commutative}: \vspace{0.75mm}
+		\\ 
+			$\begin{gathered}
+		\quad \quad \quad \quad \quad \quad \quad \quad	x \oplus y  = y \oplus x\textrm{,}  \quad \quad x \odot y = y \odot x, \quad \quad \quad \quad \quad \quad  \quad \quad  \emph{ \textrm{for all }} x, y \in \mathbb{T}.  
+		\end{gathered}$ \vspace{3mm}
+		\item The \emph{distributive law} holds:
+		\vspace{0.5mm}
+		\\ 
+		$\begin{gathered}
+			\quad   \quad \quad \quad \quad \quad \quad \quad x \odot (y \oplus z)= x \odot y  \textrm{ }  \oplus \textrm{ } x \odot z, \quad \quad \quad \quad \quad  \quad \quad\quad \textrm{     }  \quad \emph{ \textrm{for all }} x, y, z \in \mathbb{T}.  
+		\end{gathered}$ \vspace{3mm} 
+		\item Tropical addition and tropical multiplication have the \emph{identity} elements such that: \\ 	\vspace{0.75mm} 
+		$\begin{gathered}
+		\quad  \quad \quad  \quad \quad	\forall x \in \mathbb{T}, \quad x \oplus (-\infty) = \textrm{max($x$, $-\infty$)}=x \quad \textrm{and} \quad x \odot 0 = x + 0=x.   \label{fund2}
+		\end{gathered}$  \vspace{1mm} \\ 
+		We can see that the identity for  tropical addition is $-\infty$ while the identity of tropical multiplication is 0. One can also see that tropical multiplication inherits the classical arithmetic over $\R$.\vspace{3mm}
+		\item $\forall x \in \mathbb{T}, \quad x \odot (-\infty) = x + (-\infty) = -\infty$  \vspace{3mm}
+		\item The \emph{inverse} of $x\in \mathbb{T} $ $\setminus$$\{-\infty\}$ for tropical multiplication is $-x$.  \vspace{3mm}
+		\item There is no inverse for tropical addition as the solution for $x$ $\neq$ $-\infty$ and $y$ $\in \mathbb{T}$ such that\\ $x$ $\oplus$ $y$ = $-\infty$ does not exist.  This means that there is no subtraction in the tropical semiring e.g. $x$ $\oplus$ 8 = 3 has no solution for $x$.  \vspace{3mm} 
+	 
+		\item Tropical addition is $idempotent$ i.e. $x \oplus x$ = $x$ for all $x$ $\in  \mathbb{T}$.
+	\end{enumerate}
+
+
+\end{blub}
+
+\begin{examp}
+	Here are some numerical examples of the tropical operations:
+	\begin{align}  4 \oplus 7  =\textrm{max}(4,\textrm{ }7)=7 \textrm{,} \quad \quad 4 \odot 7 = 4+7= 11,\quad \quad &3 \oplus 3  = \textrm{max}(3, 3)=3 \textrm{,} \quad \quad 3 \odot 0 =3+0= 3, \nonumber 
+		\\2 \oplus 6\oplus4 \oplus 9\oplus 5=\textrm{max}(&2,6,4,9,5)=9, \nonumber
+		\\5\odot (4 \oplus 6)  = 5 \odot 6&= 11, \nonumber
+		\\5\odot (4 \oplus 6) = 5\odot 4 \oplus 5  \odot 6&= 9 \oplus 11= 11. \nonumber
+	\end{align}
+\end{examp}
+\newpage
+ \hspace{3mm} \textbf{Tropical Pascal's triangle.} The \emph{tropical Pascal's triangle} only has entries integer 0: \vspace{-5mm} 
+		\begin{center}$0$\\ \vspace{-1.7mm} 
+		$0 \quad \quad 0$ \\ \vspace{-1.7mm} 
+		$0 \quad\quad 0\quad\quad 0$ \\ \vspace{-1.7mm} 
+		$0 \quad\quad 0\quad\quad 0\quad\quad 0$ \\ \vspace{-1.7mm} 
+	$\ldots \quad \ldots \quad \ldots \quad \ldots \quad \ldots$
+	\end{center} \vspace{-6.4mm} 
+	\hspace{3mm} This means that the \emph{binomial expansion} in the tropical semiring has coefficients 0, which is the tropical multiplicative identity.
+\begin{rmk}
+	From now on we will drop the notation $\odot$ when it is obvious that an equation is under tropical operations e.g. $x \oplus y\odot z = x\oplus yz$. 
+\end{rmk}
+\begin{defn} Let $x,y \in \mathbb{T}$ and $n \in \mathbb{Z}$. \emph{Tropical exponent}  in the tropical semiring works as follows:
+	\begin{enumerate}[noitemsep,topsep=-6pt]
+		\item \vspace{0.75mm}
+	 	$x^n=n \cdot x,$ where the left hand side is $x$ raised to the \emph{tropical power} of $n$ while the right hand side has $x$ multiplied by $n$.
+	   \vspace{2mm}
+	 	\item $(x \oplus y)^n = x^n \oplus y^n  $\\	\emph{Proof:} $(x \oplus y)^n =
+	 	\smash[b]{\! \underbrace{(x \oplus y) \odot \cdots \odot (x \oplus y)\,}_\text{$n$ times}}=x^n \oplus x^{(n-1)}y  \oplus  \ldots \oplus xy^{(n-1)} \oplus y^n = x^n \oplus y^n.  $ \\ \vspace{-1mm} \\ This is due to the fact that for all $x\geq y$ we have $x^n \geq x^{(n-1)}y,  \ldots ,xy^{(n-1)}$, and for all $x\leq y$ we have $y^n \geq x^{(n-1)}y,  \ldots ,xy^{(n-1)}$. Hence  the maximum would either be $x^n$ or $y^n$.\vspace{3mm}
+	 	\end{enumerate}
+\end{defn}
+\begin{rmk} $\mathbb{T}$ can also be defined as ($\R$  $\cup$ $\{\infty\}$, $\oplus$, $\odot$), where $x \oplus y := \textrm{min($x$, $y$)}$ and $\odot$ is the typical addition. The identity of the tropical addition for this case therefore becomes $ \infty $. This new semiring is isomorphic to the one previously described with the map $x\mapsto-x$. 
+\end{rmk}
+\hspace*{3mm} We will now show that $\mathbb{T}$ is indeed a semiring.
+
+
+
+\begin{defn} A \emph{monoid} is a set $M$ with a binary operation $\mu : M \times M \rightarrow M$  such that for all $x, y, z \in M$ the following hold: 
+		\\ \setlength{\parindent}{5ex} \indent 1. The operation $\cdot$ in $M$ is associative i.e. $x \cdot (y \cdot z)  = (x \cdot y) \cdot z$ \\
+		\indent 2. There exists an identity element $e \in M$ such that $e \cdot x= x \cdot e = x$. \\
+\hspace*{3mm} A monoid therefore satisfies all the conditions of a group except for the existence of the inverse for each element. We will now formally define a semiring: 
+\end{defn}
+
+\begin{defn} A \emph{semiring} is a set $R$ with two binary operations $+$ and $\cdot$ such that for all $x,y,z \in R$ we have:
+	\\ \setlength{\parindent}{5ex} \indent 1. $R$ equipped with $+$ is a commutative monoid with identity element 0.   \\
+	\indent 2. $R$ equipped with $\cdot$ is a monoid with identity element 1.    \\
+	\indent 3. The operation $\cdot$ is distributive over the operation $+$ such that:
+				\begin{align} x \cdot (y + z)= (x \cdot y)  + (x \cdot z), \nonumber \\
+					(x + y) \cdot z= (x \cdot z)  + (y \cdot z), \nonumber 
+				\end{align}
+ \indent 4. $0 \cdot x = x \cdot 0 = 0$.  
+\end{defn}
+ \hspace*{3mm} From the definition above, we can therefore see that $\mathbb{T}$ is indeed a semiring.
+
+
+
+
+
+\subsection{Tropical Polynomials}
+\hspace*{3mm} Let $n \in \mathbb{N}$ and $x_1,x_2,...,x_n$ be variables with values in the tropical semiring $\mathbb{T}$. Consider the following:
+
+		\begin{defn} A \emph{tropical monomial} is a map $m:\mathbb{T}^n\to\mathbb{T}$ of the form: 
+			\begin{equation} m(x_1,...,x_n)=cx_1^{k_1}x_2^{k_2}\ldots x_n^{k_n},
+				\end{equation}
+		where $c\in \mathbb{T}$ and $k_1,\ldots,k_n \in \mathbb{N}$.			\end{defn}
+	\begin{rmk}
+		Since tropical multiplication is commutative, we can write the monomials with raised exponents. For example:
+		\begin{equation}
+			x_3\odot x_4 \odot x_2\odot x_1 \odot x_3\odot x_4\odot x_4\odot x_1 =x_1^{2}x_2  x_3^{2}x_4^{3} 
+		\end{equation}
+		which in the usual arithmetic we would get:
+		\begin{equation}
+		x_3+ x_4 + x_2+ x_1 + x_3+ x_4+ x_4+ x_1 =2x_1+x_2  +2x_3+3x_4. 
+	\end{equation}
+	\end{rmk}
+	
+	
+	\begin{defn} A \emph{tropical polynomial} is a map  $p:\mathbb{T}^n\to\mathbb{T}$ that is a finite linear combinations of tropical monomials of the form: 
+	\begin{equation} p(x_1,...,x_n)=\bigoplus\limits_{i=1}^m{} c_ix_1^{k_{i,1}}x_2^{k_{i,2}} \ldots x_n^{k_{i,n}},
+	\end{equation}
+	where $c_1,...,c_m\in \mathbb{T}$ and $k_{1,1},...,k_{m,n} \in  \mathbb{N}$.
+	  \end{defn}
+
+	\begin{rmk}
+		A tropical polynomial in the usual arithmetic is in the following form:
+		\begin{equation} \label{eq:1}
+			p(x_1,\ldots,x_n)=\textrm{max}(c_1+k_{1,1}\cdot x_1+\ldots+k_{1,n}\cdot x_n,\textrm{ } c_2+k_{2,1}\cdot x_1+\ldots+k_{2,n}\cdot x_n,\textrm{ } \ldots\textrm{ })
+		\end{equation}
+	\end{rmk}
+\begin{defn}\label{degree} A tropical polynomial is of \emph{degree} $k$ for $k=\textrm{max}_i(k_{i,1}+\ldots+k_{i,n})$ for all coefficients $c_i\neq-\infty$. \\ \\ \hspace{-4mm}
+   There are many properties that tropical polynomials exhibit. In this paper, we will mainly focus on tropical polynomials in one variable and in two variables.
+	\end{defn}  \vspace{-2mm}
+   \hspace{3mm} \textbf{Tropical Polynomials in one variable.}  Below are some examples of \emph{tropical polynomials in one variable} so that we can observe and understand them:
+\begin{examp} Let $p:\mathbb{T}\to\mathbb{T} $ be a tropical polynomial: 
+\begin{enumerate}[noitemsep,topsep=-6pt]
+\item \vspace{0.75mm}
+		$ p_1(x)=x \oplus 1 =\textrm{max}(x, 1),$ \vspace{2mm}
+		\item $ p_2(x)=x^2 \oplus 0 =\textrm{max}(2x, 0), $\vspace{2mm}
+		\item $ p_3(x)=(-2)x^2\oplus x \oplus 1 = \textrm{max}(2x-2,x,1).  $
+\end{enumerate}
+We can break down the values of these tropical polynomials as piecewise linear functions. The following are the tropical polynomial equations and their graph: \\ \\
+		\noindent\begin{minipage}{.5\linewidth}
+		\[\textrm{1. } p_1(x) = \begin{cases} 
+			\textrm{ }1 & \textrm{if }x\leq 1 \\
+			\textrm{ }x & \textrm{if }x\geq 1,
+		\end{cases}
+		\]
+	\end{minipage}%
+	\begin{minipage}{.5\linewidth}
+		\[\textrm{2. } p_2(x) = \begin{cases} 
+			\textrm{ }0 & \textrm{if }x\leq 0 \\
+			\textrm{ }2x & \textrm{if }x\geq 0, 
+		\end{cases}
+		\]
+	\end{minipage}
+	\[\textrm{3. } p_3(x) = \begin{cases} 
+		\textrm{ }1 & \textrm{if }x\leq 1 \\
+		\textrm{ }x & \textrm{if }1 \leq x\leq 2 \\
+		\textrm{ }2x-2 & \textrm{if }x\geq 2. 
+	\end{cases}
+	\]
+
+\end{examp}
+\vspace{10mm}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=6.4cm]{geogebra-export1.png}
+	\caption{Plot of $p_1(x)=x\oplus 1$.}
+	\label{fig:1} 
+\end{figure}
+\vspace{8mm}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=6.8cm]{ekksk4.png}
+	\caption{Plot of $p_2(x)=x^2\oplus 0$}
+	\label{fig:Figure 2} 
+\end{figure}	
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=7.0cm]{ssss.png}
+	\caption{Plot of $p_3(x)=(-2)x^2\oplus x \oplus 1$.}
+	\label{fig:3} 
+\end{figure}
+
+\begin{rmk}\label{remark}
+Observations from the figures above allow us to understand the following important properties of all general tropical polynomials $p: \mathbb{T}^n\to\mathbb{T}$:
+	  \begin{enumerate}[noitemsep,topsep=-5pt]
+	  	\item $p$ is continuous;
+	  	\item $p$ is a piecewise linear function with the number of pieces being finite;
+	  	\item $p$ is convex.
+	  \end{enumerate}
+\end{rmk}
+\hspace*{3mm} The central idea in tropical geometry revolves around the existense of tropical roots. Let us first define the roots of a tropical polynomial in one variable:
+\begin{defn} Let $p: \mathbb{T}\to\mathbb{T}$ be a tropical polynomial in one variable. The \emph{roots} of $p$ are all points $x_0 \in \mathbb{T}$ such that either $p(x_0)=-\infty$ or there exists a pair $i\neq j$ such that $p(x_0)=c_ix^i_0=c_jx^j_0$ i.e. the points at which the maximum are achieved at least twice.
+	\end{defn}
+\begin{examp}
+	Let $p_3(x)=(-2)x^2\oplus x \oplus 1$. The maximum are obtained twice at $x=1$ and $x=2$. Therefore, the tropical roots of $p_3$ are 1 and 2.
+\end{examp}
+	\begin{rmk}
+	We can also use the graphs of $p$ to find the tropical roots. The \emph{roots} of $p(x)$ are all $x_0 \in \mathbb{T}$ such that $p(x)$ has a corner at $x_0$. From Figure \ref{fig:3}, we can see that the corners of $p_3$ are indeed at $x=1$ and $x=2$. In other words, the tropical roots $x_0$ are where $p(x_0)$ are non-differentiable.
+\end{rmk}
+\begin{defn}
+	The \emph{order} of a root $x_0$ is the maximum of $|i-j|$ for all possible pairs $i,j$ which obtained the maximum at $x_0$.
+\end{defn}
+\begin{examp}
+	Let $p_2(x)=x^2 \oplus 0$. The maximum at root $x_0=0$ are obtained twice and has order 2 i.e.  $|i-j|=|2-0|=2$, it has a double root at $0$.
+\end{examp}
+
+
+	\newpage
+
+\section{Tropical Curves}
+\hspace{3mm} We have only been discussing on tropical polynomials in one variable. We will now expand to multivariable tropical polynomials.
+\subsection{Tropical Hypersurface}
+\begin{defn} Let $p:\mathbb{T}^n \to \mathbb{T}$ be a tropical polynomial. The \emph{roots} or \emph{zeros} of a tropical polynomial $p(x_1,\ldots,x_n)$ are the points $w_1,\ldots,w_n\in\mathbb{T}$ such that the maximum  (as in \ref{eq:1}) are obtained at least twice i.e. the points in $p(x_1,\ldots,x_n)$ where they are non-differentiable. \label{rooots}
+	\end{defn}
+\begin{rmk} We will use the terms \emph{roots}, \emph{zeros} and \emph{tropical roots} interchangeably throughout this paper as they have the same meaning.
+	\end{rmk}
+\begin{defn}
+	The \emph{tropical hypersurface} of $p$, denoted $V(p)$, is the set of all $w_1,\ldots,w_n\in\mathbb{T}$ such that the maximum is obtained at least twice. In other words, $V(p)$ is the set of all tropical roots.  
+	\end{defn}
+\begin{examp} An example of a tropical hypersurface in one-variable tropical polynomial is for $p_3=(-2)x^2\oplus x \oplus 1 \textrm{, we have  }V(p_3)=\{1,2\}.$
+\end{examp}
+\hspace{3mm} In the following, we will focus on \textbf{tropical polynomials in two variables}.
+\begin{defn}
+	Let $p:\mathbb{T}^2 \to \mathbb{T}$ be a \emph{tropical polynomial in two variables}. It is in the form:
+	\begin{equation}
+		p(x,y)=\bigoplus_{(i,j)}c_{i,j} \odot x^i \odot y^j
+	\end{equation}
+\end{defn}
+\begin{examp} Below are some examples of tropical polynomials in two variables: 
+	\begin{enumerate}[noitemsep,topsep=-6pt] \label{con}
+		\item \vspace{0.75mm}
+		$ p_4(x,y)=x \oplus y\oplus0 =\textrm{max}(x,y,0),$ \vspace{2mm}
+		\item $ p_5(x,y)=2x \oplus 4xy \oplus 3y \oplus 0 =\textrm{max}(x+2,x+y+4,y+3,0), $\vspace{2mm}
+	\item $ p_6(x,y)=(-1)x^2 \oplus 1xy \oplus (-1)y^2 \oplus x \oplus y\oplus 1 =\textrm{max}(2x-1,x+y+1,2y-1,x,y,1).$
+	\end{enumerate} \label{eax}
+\end{examp}
+
+\hspace{3mm} It is hard to work with tropical hypersurfaces in $\mathbb{T}^2$ as the inclusion of minus infinity makes it more complicated to study it. Since minus infinity is the  the additive identity of $\mathbb{T}$, we will define $\mathbb{T}^\textrm{x}:=\mathbb{R}$, hence $(\mathbb{T}^\textrm{x})^2=\mathbb{R}^2$ .  
+\begin{defn} Let $p(x,y):\mathbb{R}^2 \to \mathbb{R}$ be a tropical polynomial in two variables.  We say that the \emph{roots} of $p(x,y)$ are all points $(x_0,y_0) \in \mathbb{R}^2$ such that there exists pairs $(i,j)\neq(k,l)$ satisfying $p(x_0,y_0)=c_{i,j}x_0^iy_0^j=c_{k,l}x_0^k y_0^l$. \label{newroot}
+\end{defn}
+\begin{rmk} Note that changing $p:\mathbb{T}^2 \to \mathbb{T}$ to $p:\mathbb{R}^2 \to \mathbb{R}$ does not affect the general idea of what will be discussed, but it does render the definitions and drawings below.
+\end{rmk}
+\subsection{Tropical Curves in $\mathbb{R}^2$}
+\begin{defn} Let $p:\mathbb{R}^2 \to \mathbb{R}$ be a tropical polynomial in two variables. A \emph{tropical curve} or \emph{plane tropical curve} is the set of all roots or zeros of $p$ i.e. a tropical curve $V(p)$ is a set where:
+	\begin{equation}
+		V(p)=\{(x_0,y_0)\in\mathbb{R}^2 |\textrm{ } \exists(i,j)\neq(k,l),\textrm{ } p(x_0,y_0)=c_{i,j}x_0^iy_0^j=c_{k,l}x_0^k y_0^l\}. \label{hehe}
+	\end{equation}
+\end{defn}
+
+
+\begin{examp} To understand the geometric look of tropical curves, we will use the tropical polynomials in two variables from Example \ref{eax} as examples:
+		\[\textrm{1. } p_4(x,y) = \begin{cases} 
+		\textrm{ }0 & \textrm{if }x\leq 0,\textrm{ }  y\leq 0 \\
+		\textrm{ }x & \textrm{if }x\geq y,\textrm{ }  x\geq 0  \\
+		\textrm{ }y & \textrm{if }x\leq y,\textrm{ }  y\geq 0. 
+	\end{cases}
+	\]
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=10cm]{x,y,0.png}
+		\caption{Graph of $p_4(x,y)=x \oplus y \oplus 0$}
+		\label{fig:4} 
+	\end{figure}
+	\
+	 To visualise or draw a graph of a tropical polynomial in two variables (or higher) is hard without the help of mathematical softwares. This is where the idea of tropical curves comes useful. Shown below is the piecewise linear function  $V(p_4)$:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=6.3cm]{tropp111.png}
+	\caption{Tropical curve corresponding to $p_4(x,y)=x \oplus y \oplus 0$.}
+	\label{fig:5} 
+	\end{figure}
+\end{examp}
+\begin{rmk}
+From observing the graph of $p_4(x,y)=x \oplus y \oplus 0$ in Figure \ref{fig:4}, we can see that this polynomial is a continuous convex piecewise linear function with finite number of pieces, which are the properties of tropical polynomials as stated on Remark \ref{remark}.
+\end{rmk}
+\begin{examp}Here are more examples of tropical curves $V(p_5)$ and $V(p_6)$:
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=6.4cm]{trop222.png}
+	\caption{Tropical curve corresponding to $p_5(x,y)=2x \oplus 4xy \oplus 3y \oplus 0$}
+	\label{fig:6} 
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=6.8cm]{conic1.png}
+	\caption{Tropical curve corresponding to $p_6(x,y)=(-1)x^2 \oplus 1xy \oplus (-1)y^2 \oplus x \oplus y\oplus 1$.}
+	\label{fig:7} 
+\end{figure}
+	\end{examp}
+\begin{defn}
+	Let $p:\mathbb{R}^2 \to \mathbb{R}$ be a tropical polynomial in two variables. A tropical curve $V(p)$ is said to have \emph{degree k} if $V(p) \subset \mathbb{R}^2$ and $p$ is of degree $k$ . 
+\end{defn}
+\begin{defn}
+	We call the tropical curves in degree 1 as \emph{tropical lines}, degree 2 as \emph{tropical conics}, and degree 3 as \emph{tropical cubics}. 
+\end{defn}
+\begin{examp}
+	The tropical curve in Figure \ref{fig:5}  is a tropical line, and the tropical curves in Figure \ref{fig:6} and Figure \ref{fig:7} are both tropical conics. An example of a graph of a general tropical cubic is:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=6.8cm]{mmmm.png}
+		\caption{Tropical cubic.}
+		\label{fig:8} 
+	\end{figure}
+\end{examp}
+\begin{defn}
+The line segments and half-lines of a tropical curve are defined as \emph{edges}. 
+\end{defn}
+\begin{rmk}
+	The line segments and half-lines are constructed from the monomials of the corresponding polynomials of the tropical curve. Hence, the edges are constructed from the monomials.
+\end{rmk}
+\begin{defn}
+	The \emph{vertices} of a tropical curve are the points where the edges intersect. 
+\end{defn}
+\begin{rmk} We can observe from the figures above that tropical curves can be viewed as graphs that has vertices and edges that are bounded and unbounded. These will help us to understand further properties of tropical curves. \\ Let $V(p)$ be a tropical curve. The $properties$ of the graph of $V(p)$ are as follows:
+	\begin{enumerate}[noitemsep,topsep=-6pt]
+		\item \vspace{0.75mm}
+		$V(p)$ has finite number of vertices and edges; \vspace{2mm}
+		\item $V(p)$ has at least one unbounded edges, and may include bounded edges; \vspace{2mm}
+		\item Every edge of $V(p)$ has a rational slope.
+		 
+	\end{enumerate}
+	\end{rmk}
+
+\hspace{3mm} Let us recall the definition of tropical roots in two variables as stated in Definition \ref{newroot}. The roots of tropical polynomial $p(x,y)$ are all points $(x_0,y_0) \in \mathbb{R}^2$ such that there exists pairs $(i,j)\neq(k,l)$ satisfying $p(x_0,y_0)=c_{i,j}x_0^iy_0^j=c_{k,l}x_0^k y_0^l$. 
+\begin{defn} The \emph{weight} of an edge $e$ of tropical curve $V(p)$ is defined as the maximum of the greatest common divisor (gcd) of the numbers $|i-k|$ and $|j-l|$ for all pairs $(i,j)\neq(k,l)$ which corresponds to the edge such that:
+	\begin{equation} \label{we}
+		w(e)=\textrm{max}_{\mu(e)}(\textrm{gcd}(|i-k|,|j-l|)),
+	\end{equation} 
+where
+\begin{equation}
+	\mu(e)=\{(i,j),(k,l)|\textrm{ }\forall x_0 \in e,\textrm{ } p(x_0,y_0)=c_{i,j}x_0^iy_0^j=c_{k,l}x_0^k y_0^l\}
+\end{equation}
+\end{defn}
+
+\begin{examp}\label{Newd}
+	The tropical curves in Figure \ref{fig:5}, Figure \ref{fig:6}, Figure \ref{fig:7} and Figure \ref{fig:8} have all edges of weight 1. An example of a tropical curve with edges of weight 2 is shown below in Figure \ref{fig:9} :
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=6.8cm]{weight2.png}
+		\caption{Tropical conic $p_7(x,y)=(-1)x^2 \oplus y^2 \oplus x \oplus y\oplus 0$.}
+		\label{fig:9} 
+	\end{figure}
+\end{examp}
+\begin{rmk}
+	The weight of an edge is only specified if $w(e)\geq2$. As seen in Figure \ref{fig:9}, only the edges with weight 2 are indicated, while the other edges are of weight 1.
+\end{rmk}
+\begin{prop}
+	\emph{All edges of a tropical line have weight 1.} \end{prop}\vspace{-5mm}
+	\hspace{3mm} \emph{Proof.} A tropical line is a tropical curve of degree 1 which means the related tropical polynomial is of degree 1, in the form $p(x,y)=ax \oplus by \oplus c$ where $a,b,c\in\mathbb{R}$. Hence, using Definition \ref{newroot}, we know for a tropical line $0\leq i,j,k,l\leq1$ and without loss of generality, if $i=1$ it implies $j=0$ and $(k,l)\neq(1,0)$ hence either $(k,l)=(0,0)$ or $(k,l)=(0,1)$. Now using (\ref{we}), we get $w(e)=1$, meaning that any edge of of a tropical line will have weight 1. \qed 
+
+
+\begin{rmk}
+	An easy way to distinguish tropical curves of different degrees is to observe the unbounded edges of the graphs of the tropical curves and their directions. Looking at the tropical line in Figure \ref{fig:5}, we can see that each of the three unbounded edges are pointing at different directions $(0,-1)$, $(-1,0)$, and $(1,1)$. Meanwhile, the tropical conic in Figure \ref{fig:7} has 2 unbounded edges pointing at each direction, and the tropical cubic in \ref{fig:8} has 3 unbounded edges pointing at each direction. However, the tropical conic in Figure \ref{fig:9} has 2 unbounded edges pointing downwards while there is only 1 unbounded edge each pointing left and top-right. Notice that these two edges are the ones that have weight 2. This leads to the following proposition:
+\end{rmk}
+\begin{prop} \label{LMAP}
+	\emph{Let $V(p)$ be a tropical curve that has all edges of weight 1. $V(p)$ of degree $d$ has $d$ unbounded edges pointing in each of its directions.}
+\end{prop}
+\hspace{3mm} To prove and show why the above statement is true, we have to introduce the notion of Newton polytopes.
+
+\newpage
+\section{Dual Subdivision}
+\hspace{3mm} In this section, we will be focussing more on the geometric and combinatorial ideas of tropical curves. We will see the correspondence between tropical curves and Newton polytopes.
+\subsection{Newton Polytopes}
+\hspace{3mm} Let $S\subset \mathbb{R}^n$ be a finite set of points.
+\begin{defn} $S$ is \emph{convex} if each line segments connecting any two points in the set is also contained in the set.
+\end{defn}
+\begin{defn} The \emph{convex hull} of $S$, denoted Conv($S$), is the unique smallest convex polygon with vertices in $S$ that contains all points of $S$. Conv($S$) can also be called a \emph{polytope}.
+\end{defn}
+\hspace{3mm} Recall the definition of a tropical polynomial in two variables where $p(x,y)=\bigoplus_{(i,j)}c_{i,j}x^i y^j$. For all the definitions below we let $p$ be said polynomial. 
+\begin{defn}
+	Let $c_{i,j}x^i y^j$ be the monomials of $p$. For each monomial of $p$, we say the set $S_{i,j}$ is set of all $(i,j)$ such that the monomials have coefficients that is not minus infinity  i.e. $S_{i,j}=\{(i,j)\in \mathbb{R}^2|\textrm{ }c_{i,j}x^i y^j \textrm{ and }c_{i,j}\neq-\infty\}$. 
+\end{defn}
+\begin{defn}
+	 The \emph{Newton polytope} corresponding to $p$, denoted Newt($p$), is the convex hull of all $S_{i,j}$ of $p$ where:
+ \begin{equation}\label{wee}
+	  \textrm{Newt}(p)= \textrm{Conv}({S_{i,j}})
+	  \end{equation} 
+\end{defn}
+\begin{examp} Consider the tropical polynomial $p_8(x,y)=1x^2 \oplus xy \oplus 1y^2 \oplus x\oplus y \oplus 1$. The convex hull of $p_8$ is Conv$(p_8)=\{(0,0),(1, 0),(1,1),(2,0),(0,1),(0,2)\}$. Thus, Newt$(p_8)=\{(2,0),(0,0),(0,2)\}$
+	\end{examp}
+\hspace{3mm} Using this definition, we can construct subdivision of Newt($p$) based on the coefficients of $p$. Let us first define what a subdivision is:
+\begin{defn}
+	Let S be a finite set of points and Conv($S$) be its convex hull. A \emph{subdivision of }(Conv($S$), $S$) is a subdivision of the polytope Conv($S$) into polytopes whose vertices are of elements in $S$. 
+\end{defn}
+\subsection{Triangulation of Tropical Curves.} 
+\begin{examp}To make it easier to understand subdivision, let us use the tropical line $V(p_4)$ defined by $p_4(x,y)= x\oplus y \oplus0$ as a geometric example. We know that the point $(0,0)$ is the vertex of $V(p_4)$ as this is the point at which the three monomials $0=x^0y^0$, $x=x^1y^0$ and $y=x^0y^1$ all have the same value i.e. the point where the edges meet. Observing the exponents of these monomials, we can use the exponents as points to define a triangle of ${V(p_4)}$, with the points being $(0,0)$, $(1,0)$ and $(0,1)$. Figure \ref{fig:10} shows the triangle of ${V(p_4)}$:
+
+
+
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=6.8cm]{trianglevp4.png}
+	\caption{The polytope $\Delta_{V(p_4)}$ corresponding to $p_4(x,y)= x\oplus y \oplus0$.}
+	\label{fig:10} \end{figure}
+\end{examp}
+	\hspace{3mm} Now recall the definition of degree $k$ of a tropical polynomial from Definition \ref{degree} where  $k=\textrm{max}_i(k_{i,1}+\ldots+k_{i,n})$ for all coefficients $c_i\neq-\infty$.
+	\begin{defn}
+		The \emph{degree} $k$ of a two-variable tropical polynomial $p(x,y)=\bigoplus_{(i,j)}c_{i,j}x^i y^j$ is $k=\textrm{max}_{i,j}(i+j)$ for all coefficients $c_{i,j}\neq-\infty$.
+	\end{defn}
+\hspace{3mm} To make things easier, we will assume in the folllowing that all polynomials of degree $k$ satisfy $c_{0,0}\neq-\infty$, $c_{k,0}\neq-\infty$, and $c_{0,k}\neq-\infty$.
+\begin{rmk} 
+	The set $S_{i,j}$ is contained in the triangle with vertices $(0,0)$, $(k,0)$ and $(0,k)$. The triangle is denoted as $\Delta_k$. \label{prf}
+\end{rmk}
+	 \begin{prop}
+	 \emph{Let $S\subset\mathbb{R}^2$ be a set of points. The triangle $\Delta_k$ is precisely the convex hull of the set $S_{i,j}$.}\end{prop}\vspace{-5mm}
+	 \hspace{3mm} \emph{Proof.} The definition of convex hull and Remark \ref{prf}.
+	\begin{rmk}
+	We can call the triangle $\Delta_k$ a polytope.
+	\end{rmk}
+\subsection{Dual Subdivision of Tropical Curve}. \label{doaal} Let's go back to the tropical curve $V(p)$ of a general tropical polynomial in two variables $p(x,y)$. Let $A=\{(i,j)\in \Delta_k \cap \mathbb{Z}^2\textrm{ }|\textrm{ }p(x_0,y_0)= c_{i,j}x_0^i y_0^j\} $:
+\begin{enumerate}[noitemsep,topsep=-6pt]
+	\item \vspace{0.75mm}
+	If $v=(x_0,y_0)$ is a vertex of $V(p)$, then Conv($A$) is another polytope $\Delta_v\subset \Delta_k $.
+	\vspace{2mm}
+	\item If $(x_0,y_0)$ is a point in the interior of an edge $e$ of $V(p)$, then Conv($A$) is a segment $\delta_e \subset \Delta_k$. \vspace{-4.5mm}
+	\item The set of $\Delta_v$ for all vertices $v$ in $V(p)$ forms a subdivision of $\Delta_k$ as $p(x,y)$ is a convex piecewise linear function.   \vspace{2mm}
+	\item Let $v_1,\ldots,v_n$ be all the vertices in $V(p)$ and $\Delta_{v_1},\ldots, \Delta_{v_n}$ be all the polytopes in $\Delta_k$. Then $\Delta_{v_1}\cup\ldots\cup\Delta_{v_n}=\Delta_k$.
+	\vspace{2mm}
+	\item Let $\Delta_{v}, \Delta_{w}\subset \Delta_k$. The two polytopes either have a similar vertex, a similar edge, or do not intersect at all.
+	\vspace{2mm}
+	\item If the edge $e$ of $V(p)$ is adjacent to vertex $v$, then the segment $\delta_e$ is an edge of $\Delta_v$ perpendicular to $e$.
+	\vspace{2mm}
+	\item An edge $e$ of $V(p)$ is adjacent to only one vertex of $V(p)$ if and only if $\Delta_e\subset\Delta_k$.
+	\vspace{3mm}
+\end{enumerate} 
+\begin{defn}
+	Let $p(x,y)$ be a tropical polynomial with degree $k$ and $V(p)$ be its tropical curve. The \emph{dual subdivision} of $V(p)$ is the union of triangles $\Delta_v$ in $\Delta_k$ for each vertex $v$ of $V(p)$.
+\end{defn}
+
+ \begin{examp}
+ 	Using the tropical curves given in Example \ref{con} ( Figure \ref{fig:7}) and in Example \ref{Newd} (Figure \ref{fig:9}), shown below are the dual subdivision of those tropical curves:
+ 	\begin{figure}[H]
+ 	\centering
+ 	\includegraphics[width=6.8cm]{hmm1.png}
+ 	\caption{The dual subdivision of $V(p_6)$ where $p_6(x,y)=(-1)x^2 \oplus 1xy \oplus (-1)y^2 \oplus x \oplus y\oplus 1$}
+ 	\label{fig:11} \end{figure}
+ \begin{figure}[H]
+ 	\centering
+ 	\includegraphics[width=7.1cm]{weww.png}
+ 	\caption{The dual subdivision of $V(p_7)$ where $p_7(x,y)=(-1)x^2 \oplus y^2 \oplus x \oplus y\oplus 0$.}
+ 	\label{fig:12} \end{figure}
+ \end{examp}
+\begin{rmk}
+	The black points in Figure \ref{fig:10}, Figure \ref{fig:11} and Figure \ref{fig:12} represents the points of integer coordinates in $\mathbb{R}^2$. Note that the black points are not always the vertices of the dual subdivision.
+\end{rmk}
+\begin{rmk} To recover the tropical curve that has been transformed intro its dual subdivision polytopes is easy. We will only have to follow each steps as mentioned in subsection \ref{doaal}. For example, the recovery of $V(p_6)$ from its dual subdivision (Figure \ref{fig:11}) is shown below:
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=7.1cm]{regain.png}
+	\caption{Recovery of the tropical curve $V(p_6)$.}
+	\label{fig:13} \end{figure}
+	\end{rmk}
+\begin{rmk}
+	The weight of an edge $e$ of a tropical curve $V(p)$ can be read off directly from its dual subdivision.
+\end{rmk}
+\begin{prop} \label{FOLLOWS}\emph{An edge $e$ of a tropical curve $V(p)$ has weight $w$ if and only if $|\Delta_e \cap\mathbb{Z}^2|=w+1$.} 
+	\end{prop}
+\begin{cor}
+	\emph{The degree $k$ of a tropical curve $V(p)$ is the sum of weights of all edges adjacent to only one vertex of $V(p)$ in the direction of $(0,-1)$ (it also works if we choose the direction to be $(0,0)$ or $(-1,0)$ ) i.e. the sum of weights of all unbounded edges towards one direction.}\end{cor}\vspace{-5mm}
+	\hspace{3mm} \emph{Proof.}
+	 Follows from Proposition \ref{FOLLOWS}. \\ \\
+ $\textrm{   \hspace{3mm}   }$This collorary thus proves Proposition \ref{LMAP} as a tropical curve of degree $d$ that only has edges of weight 1 will have $d$ unbounded edges pointing in each of its directions as the sum of the weights of all unbounded edges towards one direction equal to $d$.
+	
+\subsection{Balancing Condition}
+\hspace{3mm} The consequence of the dual subdivision is that the \emph{balancing condition} is satisfied at each vertex of a tropical curve. \\ \\
+\hspace*{3mm}Let $v$ be a vertex of $V(p)$ adjacent to edges $e_1,\ldots,e_n$ with weights $w_1,\ldots,w_n$ respectively.
+ \begin{prop}\emph{There exists a unique vector $\vec{v}_i=(\alpha,\beta)\in \mathbb{Z}$ in the direction of edge $e_i$ such that }gcd\emph{($\alpha,\beta$)=1.} \end{prop}
+\vspace{-5mm}
+\hspace{3mm} \emph{Proof.} We know that every edge $e_i$ is contained in a line defined by an equation with coefficients $\mathbb{Z}$. Hence there exists a vector as shown below: \begin{figure}[H]
+	\centering
+	\includegraphics[width=5.4cm]{vector.png}
+	\caption{$\vec{v}_i=(\alpha,\beta)\in \mathbb{Z}$ in the direction of edge $e_i$ such that gcd($\alpha,\beta$)=1.}
+	\label{fig:wowe} \end{figure} 
+	 \hspace*{3mm} Now we will show what a balanced graph is. \\ We  have the polytope $\Delta_v$ where we draw the boundary by having each segment $\delta_{e_i}$ of $\Delta_v$ dual to $e_i$ being obtained from a vector $w_i\vec{v}_i$ by rotating at angle $\pi/2$ in the counter-clockwise direction. The vectors $w_1\vec{v}_1,\ldots,w_n\vec{v}_n$ then create the  polytope $\Delta_v$ dual to $v$ as shown in Figure \ref{fig:lulxd3}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=5.4cm]{polis.png}
+	\caption{The polytope $\Delta_v$}
+	\label{fig:lulxd3} \end{figure}
+We can observe that the polytope $\Delta_v$ is closeed immediately, implying the following statement:
+\begin{prop}
+	\emph{Let $v$ be a vertex of $V(p)$ adjacent to edges $e_1,\ldots,e_n$ with weights $w_1,\ldots,w_n$ respectively and $\vec{v}_i=(\alpha,\beta)\in \mathbb{Z}$ a unique vector in the direction of edge $e_i$ such that }gcd\emph{($\alpha,\beta$)=1. Then the balancing condition:}
+	\begin{equation}
+		 \sum_{i=1}^{k} w_i\vec{v}_i = 0 
+	\end{equation}
+\emph{holds.}
+\end{prop}
+\begin{defn}\label{sarah}
+	A graph in $\mathbb{R}^2$ whose edges have rational slopes and have weights $w_i\in\mathbb{Z}^+$ is a \emph{balanced graph} if it satisfies the balancing condition at every vertices.
+\end{defn}
+\begin{cor} \label{sarahs}
+	\emph{$V(p)$ is a tropical curve if and only if it is a balanced graph.} \end{cor}\vspace{-5mm}
+\hspace{3mm} \emph{Proof.} Follows from Definition \ref{sarah}.
+\newpage
+\section{Tropical B\'ezout's Theorem}
+\hspace{3mm}In projective geometry, B\'ezout's Theorem states that the intersection points of two algebraic curves in the projective plane equal to the product of the degrees of the two curves. In this section, we will have a short introduction of B\'ezout's Theorem and then proving it in tropical geometry. So let us first go back to the mathematics in algebraic geometry.
+\subsection{Classical B\'ezout's Theorem}
+\hspace{3mm} Let $K$ be a field for all the following.
+\begin{defn} $K$ is said to be \emph{algebraically closed} if every non-zero degree polynomial in $K$ has at least one root in K.
+\end{defn}
+\begin{defn} An \emph{affine space} over field $K$ is the vector space $K^n$ where the point 0 does not play a special role.
+\end{defn}
+\begin{defn} An $n$-dimensional \emph{projective space} over $K$, denoted $\mathbb{P}^n_K$ or $\mathbb{P}_K$, is the set of 1-dimensional subspaces over the vector space $K^{n+1}$.
+\end{defn}
+\hspace{3mm} We now state B\'ezout's theorem:
+\begin{thm} \textbf{(B\'ezout.)}
+	Let $F$ and $G$ be curves representing the polynomials $f(x,y)$ and $g(x,y)$ without common factors over algebraically closed field $K$ . Let $d_1=\textrm{deg}(F)$ and $d_2=\textrm{deg}(G)$. Then, $F$ and $G$ intersect exactly at $d_1\cdot d_2$ number of points if:
+	\begin{enumerate}[noitemsep,topsep=-6pt]
+		\item \vspace{0.75mm}
+		the intersections are considered in the projective plane $\mathbb{P}_K$;
+		\vspace{2mm}
+		\item the intersections are counted with multiplicities.
+	\end{enumerate}
+\end{thm}
+\begin{rmk}
+	The reason we want the curves to be in projective spaces is because two curves could have an intersection at infinity. For example, the curves $x+1=0$ and $x=0$ do not intersect at affine spaces but there exists an intersection at $x=\infty$.
+\end{rmk}
+\begin{rmk} \label{REEEE}
+The second condition of B\'ezout's theorem can be explained through an example. Let $F=x^2-y$ and $G=y$. We know that $d_1=2$ and  $d_1=1$, so if we calculate merely on $d_1\cdot d_2$, we would get $d_1\cdot d_2=2$. However, as shown in Figure \ref{fig:14} below, the two curves only intersect at one point $(0,0)$:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=4.4cm]{xylol.png}
+	\caption{Intersection of $F=x^2-y$ and $G=y$,}
+	\label{fig:14} \end{figure}
+However, if we look at the curves geometrically and move the curve $G=y$ upwards, it will lead to the two curves intersecting each other at two different points, as shown in Figure \ref{fig:15}. This means that the intersection of the curves at $(0,0)$ has multiplicity 2. Algebraically, if we let $F=G=0$ we will get $x^2=0$ where the root at $x=0$ has multiplicity 2. Hence, B\'ezout's theorem is still be correct in this case. One can also argue that we can move the curve $G=y$ downwards leading to no intersection between the two curves. This however is easily avoided on the fact that the theorem stated that the field $K$ is algebraically closed.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=4.4cm]{movedxy.png}
+	\caption{Intersection of $F=x^2-y$ and $G=y$ with deviation.}
+	\label{fig:15} \end{figure}
+\end{rmk}
+Let's go back to tropical geometry.
+\subsection{Tropical Intersection Theory}
+\hspace{3mm} The cases in Remark \ref{REEEE} are also a problem for tropical curves. Most pairs of tropical lines has one intersection point (see Figure \ref{fig:16}) just like how two lines in field $K$ would. Let us now have a tropical line and a tropical conic. From Figure \ref{fig:17} and Figure \ref{fig:18}, we can see that they can intersect once or twice. We will now explore this and show why the unique intersection point of the tropical conic and tropical line in Figure \ref{fig:18} should be counted twice.\\\\
+$\textrm{\hspace{3.5mm}}$Let $V_1(p)$ and $V_2(p)$ be tropical curves. \vspace{-1.0mm}
+\begin{prop}  \emph{$V_1(p)\cup V_2(p)$ is again a tropical curve.}\end{prop} \vspace{-5mm}
+	\hspace{3mm} \emph{Proof.} From Corollary \ref{sarahs}, we know that $V(p)$ is also a balanced graph. Now we just have to check that the union of two balanced graphs is again a balanced graph. Which is trivial because any sum (or union) of balanced graph would be a balanced graph.  \vspace{0,5mm}
+\begin{blub} \label{popo} \emph{(On the properties of $V_1(p)\cup V_2(p)$.)} 	 \begin{enumerate}[noitemsep,topsep=-6pt]
+		\item \vspace{0.75mm}
+		The set of vertices of $V_1(p)\cup V_2(p)$ is the union of vertices of $V_1(p)$, $V_2(p)$ and $V_1(p)\cap V_2(p)$;
+		\vspace{2mm}
+		\item Each point of intersection of $V_1(p)$ and $ V_2(p)$ is in an edge of both $V_1(p)$ and $V_2(p)$. \vspace{2mm}
+		\item The points of intersection of $V_1(p)$ and $ V_2(p)$ then becomes the vertices of $V_1(p)\cup V_2(p)$.\vspace{2mm}
+		\item The dual polytope to the vertex of $V_1(p)\cup V_2(p)$ made from the points of intersection $V_1(p)$ and $ V_2(p)$ is a paralleolgram.
+	\end{enumerate}.
+  \end{blub}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=4.7cm]{2tropicl.png}
+	\caption{Intersection of two tropical lines.}
+	\label{fig:16} \end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=4.7cm]{Titlepage.png}
+	\caption{Intersection of a tropical conic and a tropical line at two points.}
+	\label{fig:17} \end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=5.4cm]{hmtropic.png}
+	\caption{Intersection of tropical conic and a tropical line at one point.}
+	\label{fig:18} \end{figure}
+\begin{examp}\label{5.8}
+	Below are the corresponding dual subdivision to the new tropical curves made from Figure \ref{fig:16}, Figure \ref{fig:17}, and Figure \ref{fig:18}: 
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=5.1cm]{yaya.png}
+		\caption{Dual subdivision corresponding to tropical curve in Figure \ref{fig:16}.}
+		\label{fig:19} \end{figure}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=4.7cm]{xd.png}
+		\caption{Dual subdivision corresponding to tropical curve in Figure \ref{fig:17}.}
+		\label{fig:20} \end{figure}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=5.4cm]{kueteo.png}
+		\caption{Dual subdivision corresponding to tropical curve in Figure \ref{fig:18}.}
+		\label{fig:21} \end{figure}
+\end{examp}
+\begin{rmk} The colours of the edges of the dual subdivision in Example \ref{5.8} are in the same colour of their corresponding dual edge. This makes it easier to see the relations between the tropical curves and their dual subdivision.
+	\end{rmk}
+ \begin{rmk}Recall the 4th property of $V_1(p)\cup V_2(p)$ (here \ref{popo}). The parallelogram made from the vertices that are from the intersection of $V_1(p)$ and $V_2(p)$  can observed from Figure \ref{fig:19}, Figure \ref{fig:20}, and Figure \ref{fig:21} with the parallelogram polytopes made having two different colours on their edges. \end{rmk}
+
+\hspace{3mm}We can see that the parallelograms in Figure \ref{fig:19} and Figure \ref{fig:20} are of area 1, while the parallelogram in Figure \ref{fig:21} has area 2. It seems that the are of the parallelogram is related to the multiplicity of the intersection points. We will show that this is true, and then prove tropical B\'ezouts theorem.
+\subsection{Tropical B\'ezout's Theorem}
+\begin{defn} Let $V_1(p)$ and $V_2(p)$ be two tropical curves that intersect in a finite number of points and away from the vertices of the curves.  Let $q$ be the point of intersection of $V_1(p)$ and $V_2(p)$. The \emph{tropical multiplicity} of $q$ as an intersection point of $V_1(p)$ and $V_2(p)$ is the area of parallelogram dual to $q$ in the dual subdivision $V_1(p)\cup V_2(p)$.
+	\end{defn}
+\hspace{3mm} Now let us finally introduce tropical B\'ezout's theorem.
+\begin{thm}
+	(Sturmfels) \emph{Let $V_1(p)$ and $V_2(p)$ be two tropical curves that intersect in a finite number of points away  from the vertices of the two curves. Let $d_1$ be the degree of $V_1(p)$ and $d_2$ the degree of $V_2(p)$. Then the sum of the tropical multiplicities of all points $V_1(p)\cap V_2(p)$ equal to $d_1\cdot d_2$.} \\
+\hspace*{3mm} \emph{Proof}: Define $M$ as the sum of the tropical multiplicities of all points $V_1(p)\cap V_2(p)$. First, notice that there are three different types of polytopes in the dual subdivision corresponding to the tropical curve $V_1(p)\cup V_2(p)$:
+\begin{enumerate}[noitemsep,topsep=-6pt]
+\item \vspace{0.75mm}
+The polytopes that are dual to a vertex of $V_1(p)$. The sum of the areas of said polytopes is equal to the area of $\Delta_{d_1}$ i.e. equal to $\frac{d^2_1}{2}$,
+\vspace{2mm}
+\item The polytopes that are dual to a vertex of $V_2(p)$. The sum of the areas of said polytopes is equal to the area of $\Delta_{d_2}$ i.e. equal to $\frac{d^2_2}{2}$,
+\vspace{2mm}
+\item The polytopes that are dual to a vertex of $V_1(p)\cap V_2(p)$. The sum of the areas of said polytopes is $M$.
+\end{enumerate}
+Since the tropical curve $V_1(p)\cup V_2(p)$ is of degree $d_1+d_2$, the sum of the area of all the polytopes is equal to the area of $\Delta_{d_1+d_2}=\frac{(d_1+d_2)^2}{2}$. We then obtain
+\begin{equation}
+	M=\frac{(d_1+d_2)^2-d^2_1-d^2_2}{2}=d_1\cdot d_2,
+\end{equation}
+which is what we are trying to prove. \qed
+\end{thm}
+\begin{rmk} \label{fast}The tropical B\'ezout's theorem that has been presented and proven only applies to the tropical curves that has its Newton polytopes in $(0,0), (0,k)$ and $(k,0)$.\end{rmk}
+\newpage
+
+\section{Conclusion}
+\hspace{3mm} In restrospect, we have given plentiful exposition to prove tropical B\'ezout's theorem. We first introduced the notion of tropical algebra, understanding the properties of a tropical semiring and how tropical polynomials behave. We then focussed on tropical polynomials in two-variables, where we then talked about tropical hypersurfaces, mainly the tropical hypersurface in $\mathbb{R}^2$ which is called the tropical curve. We then presented the idea of dual subdivision by talking about convex hull and Newton polytopes. We also showed examples of triangulation tropical curves, allowing us to understand on dual subdivision of tropical curves work. This lead us to discuss the idea of balancing condition. We then gave a short description of the classical B\'ezout's theorem, and talked about the tropical intersection theory. We then finally presented and proven tropical B\'ezout's theorem. \\ \\
+\hspace*{3mm} This paper will hopefully help the keen mathematicians or people who are interested in mathematics to understand how tropical geometry can solve complicated problems in other field of mathematics, especially in algebraic geometry. \\ \\
+\hspace*{3mm} Since the tropical B\'ezout's theorem that was proven in this paper was strictly for the tropical curves that has a specific kind of Newton polytopes (stated in Remark \ref{fast}), we can continue to study the field of tropical geometry particularly tropical curves to prove the general tropical B\'ezout's theorem, and maybe so much more in the world of mathematics. 
+\newpage
+\section*{Acknowledgements}
+I would like to firstly give all my thanks and gratitude in the world to my lovely supervisor, Dr. Dmitri Panov, for his immense help and insight for this project. Next, I would like to thank the internet, for its unlimited resources that helped me to complete this paper, especially amidst this pandemic when libraries are either closed or not advised to go to. Finally and most importantly, I would like to thank myself, Amir Faris, for believing in himself to complete this paper even when he went through so many barriers, and for his undying love and support all the way through the year. Without his faith, and constant prayers, I would have never made it.
+\newpage
+\begin{thebibliography}{99}
+	
+\bibitem{ssss}
+Brandt, M. \textit{Tropical Geometry of Curves}. Lectures on Tropical Geometry. (2019) Web Resource. https://math.berkeley.edu/~brandtm/talks/tgoc.pdf 
+	
+		\bibitem{wedddw}
+	Brugall\'e, E; Shaw, K. \textit{A bit of Tropical Geometry}. Preprint at arXiv:1311.2360v3. (2014)
+	
+	\bibitem{wasddsasw}
+	Doenges, R. \textit{An Introduction to Tropical Geometry}. (2015) Web Resource. https://sites.math.washington.edu/~morrow/336\_15/papers/ryan.pdf
+	
+	\bibitem{ss}
+	Draisma, J. \textit{Tropical Geometry, Lecture 1}. Lectures on Tropical Geometry. Web Resource. https://mathsites.unibe.ch/jdraisma/teaching/tropgeom1516/lecture1.pdf 
+	
+	\bibitem{draiasdal}
+	Hlavacek, M. \textit{Random Tropical Curves}. HMC Senior Theses. Pages 1-24 (2017)
+	
+		\bibitem{wew}
+	Izhakian, Z \textit{Tropical Arithmetic and Tropical Matrix Algebra}. Preprint at arXiv:math/0505458. (2008) 
+	
+		\bibitem{wew}
+	Katz, E \textit{What is Tropical Geometry?}. American Mathematical Society. (2017) Web Resource. https://www.ams.org/journals/notices/201704/rnoti-p380.pdf
+	
+		\bibitem{dmitsdaari}
+		Maclagan, D. \textit{AARMS Tropical Geometry}. Lectures on Tropical Geometry, Pages 1-7 (2008) Web Resource. http://homepages.warwick.ac.uk/staff/D.Maclagan/AARMS/AARMSTropical.pdf
+		
+		\bibitem{drrrr}
+	Maclagan, D. \textit{Tropical Geometry}. Lectures on Tropical Geometry. (2017) Web Resource. https://homepages.warwick.ac.uk/staff/D.Maclagan/papers/ManchesterAllLectures.pdf
+	
+	\bibitem{boook}
+	Maclagan, D; Sturmfels, B. \textit{Introduction to Tropical Geometry}. American Mathematical Society,Providence, RI, Pages 1-18 (2015)
+	
+	\bibitem{wew}
+	Mikhalkin, G \textit{What is a Tropical Curve?}. American Mathematical Society. (2017) Web Resource. https://www.ams.org/notices/200704/what-is-mikhalkin-web.pdf
+	
+		\bibitem{sssssssss}
+	Morrison, R. \textit{Tropical Geometry}. Preprint at arXiv:1908.07012v1. Pages 1-16 (2019)
+	\bibitem{dmitri}
+	Panov, D. \textit{Algebraic Geometry} Lectures on Algebraic Geometry. (2021) Web Resource. 
+	
+	\bibitem{dmisstri}
+	Rau, J. \textit{A First Expedition to Tropical Geometry}. Lectures on Tropical  Geometry. Pages 1-23 (2017) Web Resource. https://math.uniandes.edu.co/~j.rau/downloads/FirstExpedition.pdf
+	
+	\bibitem{wew}
+	Ritcher-Gerbert, J; Sturmfels, B; Theobald, T. \textit{First Steps in Tropical Geometry}. Preprint at arXiv:math/0306366. (2003) 
+	
+	\bibitem{w33ew}
+	Speyer, D; Sturmfels, B. \textit{Tropical Mathematics}. Preprint at arXiv:math/0408099. (2004) 	
+	
+	\bibitem{draismal}
+	Sturmfels, B. \textit{A Combinatorial Introduction to Tropical Geometry}. Lectures on Tropical Geometry Web Resource. https://math.berkeley.edu/~bernd/tropical/sec1.pdf
+
+\bibitem{ssssss}
+Vinzant, C. \textit{Tropical Geometry}. Lectures on Tropical Geometry. (2016) Web Resource. https://clvinzan.math.ncsu.edu/teaching/591\_2016/
+	
+
+\end{thebibliography}
+\end{document}
